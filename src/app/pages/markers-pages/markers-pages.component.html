@@ -1,0 +1,25 @@
+<div #map class="w-full h-[calc(100vh-5rem)]"></div>
+<section class="fixed w-[260px] bg-white rounded left-5 top-20 p-5">
+    <h2 class="text-xl font-bold text-black mb-2">Markers</h2>
+    
+    <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-12rem)]">
+        @for(marker of markers(); track marker.id) {
+           <div class="form-control"
+           (click)="flyToMarker(marker.mapboxglMarker.getLngLat())"
+           >
+            <label class="label cursor-pointer">
+                <span class="label-text text-black text-wrap text-xs">{{marker.mapboxglMarker.getLngLat() | json}}</span>
+                <input 
+                    type="radio" 
+                    name="marker"
+                    class="radio"
+                    [style]="{backgroundColor: marker.mapboxglMarker._color}"
+                    checked="checked"
+                    >
+            </label>
+           </div>
+        }@empty {
+            <p class="text-center">No markers</p>
+        }
+    </div>
+</section>

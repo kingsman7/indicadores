@@ -1,0 +1,39 @@
+<div #map class="w-full h-[calc(100vh-5rem)]"></div>
+
+<div class="dropdown dropdown-top" id="map-style-switcher">
+  <div tabindex="0" role="button" class="btn mapbox-style-button m-1">Mapas</div>
+  <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+    <li><a (click)="changeStyle('streets-v12')">Calles</a></li>
+    <li><a (click)="changeStyle('outdoors-v12')">Exterior</a></li>
+    <li><a (click)="changeStyle('light-v11')">Claro</a></li>
+    <li><a (click)="changeStyle('dark-v11')">Oscuro</a></li>
+    <li><a (click)="changeStyle('satellite-v9')">Satélite</a></li>
+  </ul>
+</div>
+
+<section class="fixed w-[260px] bg-white rounded left-5 top-20 p-5 z-50">
+    <h2 class="text-xl font-bold text-black mb-2">Sucesos</h2>
+    
+    <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-20rem)]">
+        @for(item of sucesosWithMarkers(); track item.suceso.id) {
+           <div class="form-control"
+           (click)="flyToMarker(item.marker.getLngLat())"
+           >
+            <label class="label cursor-pointer">
+                <div class="label-text text-black text-wrap text-xs">
+                  <strong>{{ item.suceso.tipo }}</strong><br>
+                  <span>{{ item.suceso.id }}</span>
+                </div>
+                <input 
+                    type="radio" 
+                    name="suceso"
+                    class="radio"
+                    [style]="{backgroundColor: item.color}"
+                    >
+            </label>
+           </div>
+        }@empty {
+            <p class="text-center">No hay sucesos</p>
+        }
+    </div>
+</section>

@@ -57,3 +57,27 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Environments
+
+This project uses environment variables to store sensitive information such as API keys and other configuration settings. The environment variables are stored in the `.env` file. The `.env` file is not included in the repository to prevent sensitive information from being exposed. To use the environment variables, you need to create a `.env` file in the root directory of the project and add the environment variables to the file.
+
+## Mapbox
+
+This project uses Mapbox to display maps. The Mapbox API key is stored in the `.env` file. The Mapbox API key is not included in the repository to prevent sensitive information from being exposed. To use the Mapbox API key, you need to create a `.env` file in the root directory of the project and add the Mapbox API key to the file.
+
+## Tailwind CSS
+
+This project uses Tailwind CSS to style the application. The Tailwind CSS configuration is stored in the `tailwind.config.js` file. The Tailwind CSS configuration is not included in the repository to prevent sensitive information from being exposed. To use the Tailwind CSS configuration, you need to create a `tailwind.config.js` file in the root directory of the project and add the Tailwind CSS configuration to the file.
+
+## DaisyUI
+
+This project uses DaisyUI to style the application. The DaisyUI configuration is stored in the `tailwind.config.js` file. The DaisyUI configuration is not included in the repository to prevent sensitive information from being exposed. To use the DaisyUI configuration, you need to create a `tailwind.config.js` file in the root directory of the project and add the DaisyUI configuration to the file.
+
+## Set environment variables
+
+To set environment variables, run:
+
+```bash
+npm run set-env
+```
