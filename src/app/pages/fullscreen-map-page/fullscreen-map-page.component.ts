@@ -80,10 +80,15 @@ export class FullscreenMapPageComponent implements AfterViewInit {
 
   createMarkers(map: mapboxgl.Map) {
     const colorMapping: { [key: string]: string } = {
-      'Robo a transeúnte con violencia': '#FF5733',
-      'Alteración del orden público': '#33C4FF',
-      'Robo de vehículo': '#FF33A1',
-      'Violencia familiar': '#A133FF',
+      'Homicidio': '#FF0000',
+      'Intervención legal': '#0000FF',
+      'Lesiones personales': '#FFA500',
+      'Hurto': '#FFFF00',
+      'Hurto de vehículo': '#FFD700',
+      'Robo': '#DC143C',
+      'Robo de vehículo': '#8B0000',
+      'Secuestro': '#800080',
+      'Violación': '#FF1493',
       'Default': '#808080'
     };
 
