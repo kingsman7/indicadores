@@ -1,6 +1,6 @@
 <div #map class="w-full h-[calc(100vh)]"></div>
 
-<div class="dropdown dropdown-top" id="map-style-switcher">
+<div class="dropdown dropdown-bottom" id="map-style-switcher">
   <div tabindex="0" role="button" class="btn mapbox-style-button m-1">Mapas</div>
   <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
     <li><a (click)="changeStyle('streets-v12')">Calles</a></li>
@@ -11,11 +11,58 @@
   </ul>
 </div>
 
-<section class="fixed w-[260px] bg-white rounded left-5 top-20 p-5 z-50">
+<section class="fixed bg-white rounded left-5 top-5 p-5 z-50">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
+        <!-- Buscar -->
+        <div class="form-control col-span-2 md:col-span-2 lg:col-span-1">
+            <input
+              type="text"
+              placeholder="Ej: documento, calle ...."
+              class="input input-bordered w-full"
+              [value]="searchQuery()"
+              (input)="searchQuery.set($any($event.target).value)"
+            />
+        </div>
+        <!-- Estado -->
+        <div class="form-control col-span-2 md:col-span-2 lg:col-span-1">
+            <select class="select" [value]="selectedState()" (change)="selectedState.set($any($event.target).value)">
+                <option disabled selected>Seleccione un estado</option>
+                @for(state of states(); track $index) {
+                    <option value="{{state}}">{{state}}</option>
+                }
+            </select>
+        </div>
+        <!-- Fecha -->
+        <div class="form-control col-span-2 md:col-span-2 lg:col-span-1 mr-2">
+            <input
+              type="date"
+              class="input input-bordered"
+              [value]="dateFilter()"
+              (input)="dateFilter.set($any($event.target).value)"
+            />
+        </div>
+        <!-- Tipo -->
+        <div class="form-control col-span-2 md:col-span-2 lg:col-span-1 mk-2">
+            <select class="select" [value]="selectCrimeType()" (change)="selectCrimeType.set($any($event.target).value)">
+                <option disabled selected>Tipo</option>
+                @for (crime of crimeTypes(); track $index) {
+                    <option value="{{crime}}">{{crime}}</option>
+                }
+            </select>
+        </div>
+        <!-- Boton -->
+        <button class="btn btn-primary col-span-2 md:col-span-2 lg:col-span-1"
+        (click)="limpiarFiltros()">
+            Limpiar
+        </button>
+    </div>    <!-- ...existing code... -->
+</section>
+
+<section class="fixed w-[260px] bg-white rounded left-5 top-30 p-5 z-50">
     <h2 class="text-xl font-bold text-black mb-2">Sucesos</h2>
-    
+
     <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-20rem)]">
-        @for(item of sucesosWithMarkers(); track item.suceso.id) {
+        @for(item of sucesosFiltrados(); track item.suceso.id) {
            <div class="form-control"
            (click)="flyToMarker(item.marker.getLngLat())"
            >
@@ -24,8 +71,8 @@
                   <strong>{{ item.suceso.tipo }}</strong><br>
                   <span>{{ item.suceso.id }}</span>
                 </div>
-                <input 
-                    type="radio" 
+                <input
+                    type="radio"
                     name="suceso"
                     class="radio"
                     [style]="{backgroundColor: item.color}"

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, signal, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, effect, ElementRef, signal, viewChild } from '@angular/core';
 import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ mapboxgl.accessToken = environment.mapboxKey;
   styles: `
   #map-style-switcher {
     position: fixed;
-    top: 13rem;
+    top: 9rem;
     right: 5px;
     z-index: 100;
   }
@@ -43,6 +43,61 @@ export class FullscreenMapPageComponent implements AfterViewInit {
   map = signal<mapboxgl.Map | undefined>(undefined);
   coordinates = signal({lng: -64.7, lat: 9.8});
   sucesosWithMarkers = signal<MarkerAndSuceso[]>([]);
+  states = signal([
+    "Amazonas",
+    "Anzoátegui",
+    "Apure",
+    "Aragua",
+    "Barinas",
+    "Bolívar",
+    "Carabobo",
+    "Cojedes",
+    "Delta Amacuro",
+    "Falcón",
+    "Guárico",
+    "Lara",
+    "Mérida",
+    "Miranda",
+    "Monagas",
+    "Nueva Esparta",
+    "Portuguesa",
+    "Sucre",
+    "Táchira",
+    "Trujillo",
+    "La Guaira",
+    "Yaracuy",
+    "Zulia"
+]);
+
+crimeTypes = signal([
+    "Homicidio",
+    "Intervención legal",
+    "Lesiones personales",
+    "Hurto",
+    "Hurto de vehículo",
+    "Robo",
+    "Robo de vehículo",
+    "Secuestro",
+    "Violación"
+]);
+
+  searchQuery = signal('');
+  selectedState = signal('');
+  selectCrimeType = signal('');
+  dateFilter = signal(''); // Usa string si es solo una fecha
+
+  sucesosFiltrados = computed(() => {
+    return this.sucesosWithMarkers().filter(item => {
+      const suceso = item.suceso;
+      const coincideBusqueda = !this.searchQuery() ||
+        suceso.id?.toString().includes(this.searchQuery()) ||
+        suceso.descripcion?.toLowerCase().includes(this.searchQuery().toLowerCase());
+      const coincideEstado = !this.selectedState() || suceso.estado === this.selectedState();
+      const coincideFecha = !this.dateFilter() || suceso.fecha === this.dateFilter();
+      const coincideTipo = !this.selectCrimeType() || suceso.tipo === this.selectCrimeType();
+      return coincideBusqueda && coincideEstado && coincideFecha && coincideTipo;
+    });
+  });
 
   async ngAfterViewInit(): Promise<void> {
     if (!this.divElement) return;
@@ -54,21 +109,21 @@ export class FullscreenMapPageComponent implements AfterViewInit {
       center: [lng, lat],
       zoom: 9,
     });
-    
+
     this.map.set(map);
     this.mapListeners(map);
   }
-  
+
   mapListeners(map: mapboxgl.Map){
 
     map.on('moveend', () => {
       const center = map.getCenter();
       this.coordinates.set(center);
     });
-    
+
     map.on('load', () => {
       console.log('map loaded, adding controls and markers');
-      
+
       map.addControl(new mapboxgl.FullscreenControl());
       map.addControl(new mapboxgl.NavigationControl());
       map.addControl(new mapboxgl.ScaleControl());
@@ -112,7 +167,7 @@ export class FullscreenMapPageComponent implements AfterViewInit {
         .setLngLat([lng, lat])
         .setPopup(popup)
         .addTo(map);
-      
+
       newMarkers.push({ suceso, marker, color });
     });
     this.sucesosWithMarkers.set(newMarkers);
@@ -129,5 +184,12 @@ export class FullscreenMapPageComponent implements AfterViewInit {
   changeStyle(style: string) {
     if (!this.map()) return;
     this.map()?.setStyle('mapbox://styles/mapbox/' + style);
+  }
+
+  limpiarFiltros() {
+    this.searchQuery.set('');
+    this.selectedState.set('');
+    this.selectCrimeType.set('');
+    this.dateFilter.set('');
   }
 }
