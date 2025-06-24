@@ -21,7 +21,7 @@ mapboxgl.accessToken = environment.mapboxKey;
     position: fixed;
     top: 9rem;
     right: 5px;
-    z-index: 100;
+    z-index: 50;
   }
 
   .mapbox-style-button {
@@ -36,7 +36,7 @@ mapboxgl.accessToken = environment.mapboxKey;
     position: fixed;
     top: 205px;
     right: 5px;
-    z-index: 100;
+    z-index: 10;
   }
 
   .mapbox-style-button:hover {
