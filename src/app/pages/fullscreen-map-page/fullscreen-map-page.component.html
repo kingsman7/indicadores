@@ -11,7 +11,17 @@
   </ul>
 </div>
 
-<section class="fixed bg-white rounded left-5 top-5 p-5 z-50">
+<div class="flex flex-col gap-4" id="handle-show-filters">
+  <button class="btn btn-outline mapbox-style-button btn-sm" (click)="mostrarFiltros.set(!mostrarFiltros())">
+    {{ mostrarFiltros() ? 'Ocultar filtros' : 'Mostrar filtros' }}
+  </button>
+  <button class="btn btn-outline mapbox-style-button btn-sm" (click)="mostrarSucesos.set(!mostrarSucesos())">
+    {{ mostrarSucesos() ? 'Ocultar sucesos' : 'Mostrar sucesos' }}
+  </button>
+</div>
+
+<!-- Sección de filtros -->
+<section *ngIf="mostrarFiltros()" class="fixed bg-white rounded left-5 top-5 p-5 z-50">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
         <!-- Buscar -->
         <div class="form-control col-span-2 md:col-span-2 lg:col-span-1">
@@ -55,32 +65,30 @@
         (click)="limpiarFiltros()">
             Limpiar
         </button>
-    </div>    <!-- ...existing code... -->
+    </div>
 </section>
 
-<section class="fixed w-[260px] bg-white rounded left-5 top-30 p-5 z-50">
-    <h2 class="text-xl font-bold text-black mb-2">Sucesos</h2>
-
-    <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-20rem)]">
-        @for(item of sucesosFiltrados(); track item.suceso.id) {
-           <div class="form-control"
-           (click)="flyToMarker(item.marker.getLngLat())"
-           >
-            <label class="label cursor-pointer">
-                <div class="label-text text-black text-wrap text-xs">
-                  <strong>{{ item.suceso.tipo }}</strong><br>
-                  <span>{{ item.suceso.id }}</span>
-                </div>
-                <input
-                    type="radio"
-                    name="suceso"
-                    class="radio"
-                    [style]="{backgroundColor: item.color}"
-                    >
-            </label>
-           </div>
-        }@empty {
-            <p class="text-center">No hay sucesos</p>
-        }
-    </div>
+<!-- Sección de sucesos -->
+<section *ngIf="mostrarSucesos()" class="fixed w-[260px] bg-white rounded left-5 top-30 p-5 z-50">
+  <h2 class="text-xl font-bold text-black mb-2">Sucesos</h2>
+  <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-20rem)]">
+    @for(item of sucesosFiltrados(); track item.suceso.id) {
+      <div class="form-control" (click)="flyToMarker(item.marker.getLngLat())">
+        <label class="label cursor-pointer">
+          <div class="label-text text-black text-wrap text-xs">
+            <strong>{{ item.suceso.tipo }}</strong><br>
+            <span>{{ item.suceso.id }}</span>
+          </div>
+          <input
+            type="radio"
+            name="suceso"
+            class="radio"
+            [style]="{backgroundColor: item.color}"
+          >
+        </label>
+      </div>
+    }@empty {
+      <p class="text-center">No hay sucesos</p>
+    }
+  </div>
 </section>

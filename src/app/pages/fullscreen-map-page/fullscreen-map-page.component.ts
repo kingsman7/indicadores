@@ -32,6 +32,13 @@ mapboxgl.accessToken = environment.mapboxKey;
     text-transform: none !important;
   }
 
+  #handle-show-filters {
+    position: fixed;
+    top: 205px;
+    right: 5px;
+    z-index: 100;
+  }
+
   .mapbox-style-button:hover {
     background-color: #f2f2f2 !important;
   }
@@ -85,6 +92,8 @@ crimeTypes = signal([
   selectedState = signal('');
   selectCrimeType = signal('');
   dateFilter = signal(''); // Usa string si es solo una fecha
+  mostrarFiltros = signal(true);
+  mostrarSucesos = signal(true);
 
   sucesosFiltrados = computed(() => {
     return this.sucesosWithMarkers().filter(item => {
