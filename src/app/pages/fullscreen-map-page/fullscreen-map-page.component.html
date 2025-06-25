@@ -36,9 +36,9 @@
         <!-- Estado -->
         <div class="form-control col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1">
             <select class="select" [value]="selectedState()" (change)="selectedState.set($any($event.target).value)">
-                <option disabled selected>Seleccione un estado</option>
+                <option value="" disabled>Seleccione un estado</option>
                 @for(state of states(); track $index) {
-                    <option value="{{state}}">{{state}}</option>
+                    <option [value]="state">{{state}}</option>
                 }
             </select>
         </div>
@@ -54,9 +54,9 @@
         <!-- Tipo -->
         <div class="form-control col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1">
             <select class="select" [value]="selectCrimeType()" (change)="selectCrimeType.set($any($event.target).value)">
-                <option disabled selected>Tipo</option>
+                <option value="" disabled>Tipo</option>
                 @for (crime of crimeTypes(); track $index) {
-                    <option value="{{crime}}">{{crime}}</option>
+                    <option [value]="crime">{{crime}}</option>
                 }
             </select>
         </div>
