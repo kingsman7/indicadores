@@ -92,7 +92,7 @@ crimeTypes = signal([
   selectedState = signal('');
   selectCrimeType = signal('');
   dateFilter = signal(''); // Usa string si es solo una fecha
-  mostrarFiltros = signal(true);
+  mostrarFiltros = signal(false);
   mostrarSucesos = signal(true);
 
   sucesosFiltrados = computed(() => {
