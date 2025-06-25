@@ -134,7 +134,7 @@ crimeTypes = signal([
       console.log('map loaded, adding controls and markers');
 
       map.addControl(new mapboxgl.FullscreenControl());
-      map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
       map.addControl(new mapboxgl.ScaleControl());
       map.addControl(new mapboxgl.AttributionControl());
 
