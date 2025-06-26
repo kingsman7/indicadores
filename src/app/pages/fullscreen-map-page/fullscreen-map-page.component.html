@@ -69,7 +69,7 @@
 </section>
 
 <!-- Sección de sucesos -->
-<section *ngIf="mostrarSucesos()" class="fixed sm:w-[260px] w-full bg-white rounded sm:left-5 sm:top-50 lg:top-30 p-5 z-50">
+<section *ngIf="mostrarSucesos()" class="fixed sm:w-[260px] w-full bg-white rounded sm:top-50 lg:top-30 p-5 z-50">
   <h2 class="text-xl font-bold text-black mb-2">Sucesos</h2>
   <div class="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-5rem)] sm:max-h-[calc(100vh-35rem)]">
     @for(item of sucesosFiltrados(); track item.suceso.id) {
