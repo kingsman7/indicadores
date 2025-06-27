@@ -10,6 +10,12 @@ interface MarkerAndSuceso {
   color: string;
 }
 
+
+interface SucesoForType {
+  tipo: string;
+  markers?: MarkerAndSuceso[];
+}
+
 mapboxgl.accessToken = environment.mapboxKey;
 
 @Component({
@@ -99,13 +105,30 @@ crimeTypes = signal([
     return this.sucesosWithMarkers().filter(item => {
       const suceso = item.suceso;
       const coincideBusqueda = !this.searchQuery() ||
-        suceso.id?.toString().includes(this.searchQuery()) ||
+        suceso.id?.toString().toLowerCase().includes(this.searchQuery().toLowerCase()) ||
         suceso.descripcion?.toLowerCase().includes(this.searchQuery().toLowerCase());
       const coincideEstado = !this.selectedState() || suceso.estado === this.selectedState();
       const coincideFecha = !this.dateFilter() || suceso.fecha === this.dateFilter();
       const coincideTipo = !this.selectCrimeType() || suceso.tipo === this.selectCrimeType();
       return coincideBusqueda && coincideEstado && coincideFecha && coincideTipo;
+    }).sort((a, b) => {
+      return a.suceso.tipo.localeCompare(b.suceso.tipo);
     });
+  });
+
+  sucesosFiltradosPorTipo = computed(() => {
+    return this.sucesosFiltrados().reduce((acc, item) => {
+      const tipo = item.suceso.tipo;
+      if (!acc.some(s => s.tipo === tipo)) {
+        acc.push({ tipo, markers: [] });
+      }
+      const sucesoForType = acc.find(s => s.tipo === tipo);
+      if (sucesoForType) {
+        sucesoForType.markers?.push(item);
+      }
+      return acc;
+    }, [] as SucesoForType[]);
+
   });
 
   async ngAfterViewInit(): Promise<void> {
